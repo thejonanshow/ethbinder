@@ -4,8 +4,9 @@ import {
   ConnectButton,
   InstallFlaskButton,
   ReconnectButton,
-  SendHelloButton,
+  BindAccountButton,
   Card,
+  GitHubLoginButton
 } from '../components';
 import { defaultSnapOrigin } from '../config';
 import {
@@ -13,6 +14,7 @@ import {
   useInvokeSnap,
   useMetaMaskContext,
   useRequestSnap,
+  useGitHubLogin,
 } from '../hooks';
 import { isLocalSnap, shouldDisplayReconnectButton } from '../utils';
 
@@ -104,7 +106,9 @@ const Index = () => {
   const { error } = useMetaMaskContext();
   const { isFlask, snapsDetected, installedSnap } = useMetaMask();
   const requestSnap = useRequestSnap();
+  const gitHubLogin = useGitHubLogin();
   const invokeSnap = useInvokeSnap();
+  const loggedInWithGitHub = (card) => { return card; };
 
   const isMetaMaskReady = isLocalSnap(defaultSnapOrigin)
     ? isFlask
@@ -117,12 +121,43 @@ const Index = () => {
   return (
     <Container>
       <Heading>
-        Welcome to <Span>template-snap</Span>
+        <Span>ETH</Span>binder
       </Heading>
       <Subtitle>
-        Get started by editing <code>src/index.tsx</code>
+        A properly verified Ethereum shield for your GitHub account
       </Subtitle>
+      <br/>
+      <br/>
+      <img src="https://img.shields.io/badge/eth-verified-51D06A?logo=ethereum&labelColor=5177D0" />
       <CardContainer>
+        <Notice>
+          <p>
+            <b>ETHbinder</b> allows you to bind your Ethereum address to your GitHub
+            account's commit signing key, helping reassure others that it's your wallet.
+          </p>
+          <br/>
+          <p>
+            Supply-chain attacks are becoming more frequent, use <b>ETHbinder </b>
+            to help prevent the accidental loss of funds by providing you with a provably canonical address.
+          </p>
+        </Notice>
+        {installedSnap && loggedInWithGitHub (
+          <Card
+            content={{
+              title: 'Create Ethereum Binding',
+              description:
+                'This will fork the ETHbinder repository to your GitHub account and post a commit to the signatures branch, allowing us to verify both your wallet signature and your GitHub commit signature. The mapping of GitHub handles to Ethereum addresses is stored publicly on the blockchain so it may be independently verified.',
+              button: (
+                <BindAccountButton
+                  onClick={handleSendHelloClick}
+                  disabled={!installedSnap}
+                />
+              ),
+            }}
+            disabled={!installedSnap}
+            fullWidth={true}
+          />
+        )}
         {error && (
           <ErrorMessage>
             <b>An error happened:</b> {error.message}
@@ -142,9 +177,9 @@ const Index = () => {
         {!installedSnap && (
           <Card
             content={{
-              title: 'Connect',
+              title: 'Connect MetaMask',
               description:
-                'Get started by connecting to and installing the example snap.',
+                'ETHbinder will use MetaMask to confirm your Ethereum address by signing some data that will be committed to GitHub.',
               button: (
                 <ConnectButton
                   onClick={requestSnap}
@@ -171,33 +206,19 @@ const Index = () => {
             disabled={!installedSnap}
           />
         )}
-        <Card
-          content={{
-            title: 'Send Hello message',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
-            button: (
-              <SendHelloButton
-                onClick={handleSendHelloClick}
-                disabled={!installedSnap}
-              />
-            ),
-          }}
-          disabled={!installedSnap}
-          fullWidth={
-            isMetaMaskReady &&
-            Boolean(installedSnap) &&
-            !shouldDisplayReconnectButton(installedSnap)
-          }
-        />
-        <Notice>
-          <p>
-            Please note that the <b>snap.manifest.json</b> and{' '}
-            <b>package.json</b> must be located in the server root directory and
-            the bundle must be hosted at the location specified by the location
-            field.
-          </p>
-        </Notice>
+        {loggedInWithGitHub && (
+          <Card
+            content={{
+              title: 'Login with GitHub',
+              description:
+                'Connecting ETHbinder to MetaMask allows us to simplify the setup process for you. It also allows us to confirm that your commit signing key is yours.',
+              button: (
+                <GitHubLoginButton
+                />
+              ),
+            }}
+          />
+        )}
       </CardContainer>
     </Container>
   );

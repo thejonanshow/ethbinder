@@ -4,6 +4,7 @@ build/
 coverage/
 .cache/
 public/
+tags
 
 # Logs
 logs

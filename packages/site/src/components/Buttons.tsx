@@ -2,6 +2,8 @@ import type { ComponentProps } from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as FlaskFox } from '../assets/flask_fox.svg';
+import { ReactComponent as GitHubOctocat } from '../assets/github_octocat.svg';
+import { ReactComponent as Binding } from '../assets/binding.svg';
 import { useMetaMask, useRequestSnap } from '../hooks';
 import { shouldDisplayReconnectButton } from '../utils';
 
@@ -95,8 +97,35 @@ export const ReconnectButton = (props: ComponentProps<typeof Button>) => {
   );
 };
 
+export const GitHubLoginButton = (props: ComponentProps<typeof Button>) => {
+  return (
+    <Button {...props}>
+      <GitHubOctocat />
+      <ButtonText>Login</ButtonText>
+    </Button>
+  );
+};
+
+export const GitHubLogoutButton = (props: ComponentProps<typeof Button>) => {
+  return (
+    <Button {...props}>
+      <GitHubOctocat />
+      <ButtonText>Logout</ButtonText>
+    </Button>
+  );
+};
+
+export const BindAccountButton = (props: ComponentProps<typeof Button>) => {
+  return (
+    <Button {...props}>
+      <Binding />
+      <ButtonText>Bind Account</ButtonText>
+    </Button>
+  );
+};
+
 export const SendHelloButton = (props: ComponentProps<typeof Button>) => {
-  return <Button {...props}>Send message</Button>;
+  return <Button {...props}>Bind Account</Button>;
 };
 
 export const HeaderButtons = () => {

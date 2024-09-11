@@ -1,5 +1,5 @@
 import type { OnRpcRequestHandler } from '@metamask/snaps-sdk';
-import { Box, Text, Bold } from '@metamask/snaps-sdk/jsx';
+import { Box, Text, Bold, Copyable } from '@metamask/snaps-sdk/jsx';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
@@ -11,6 +11,32 @@ import { Box, Text, Bold } from '@metamask/snaps-sdk/jsx';
  * @returns The result of `snap_dialog`.
  * @throws If the request method is not valid for this snap.
  */
+
+
+function buildGitHubURL(handle: string) {
+  return "https://github.com/" + handle + ".keys";
+};
+
+function getText(url: string) {
+  const response = fetch(url);
+  return response;
+}
+
+module.exports.onRpcRequest = async ({ origin, request }) => {
+  switch (request.method) {
+    // Expose a "hello" JSON-RPC method to dapps.
+    case "hello":
+      return "world!"
+
+    default:
+      throw new Error("Method not found.")
+  }
+}
+
+const url = buildGitHubURL("thejonanshow");
+const keyResponse = getText(url);
+const key = JSON.stringify(keyResponse);
+
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
   request,
@@ -26,12 +52,10 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
               <Text>
                 Hello, <Bold>{origin}</Bold>!
               </Text>
+              <Copyable value={url} />
+              <Copyable value={key} />
               <Text>
-                This custom confirmation is just for display purposes.
-              </Text>
-              <Text>
-                But you can edit the snap source code to make it do something,
-                if you want to!
+                View your keys on GitHub
               </Text>
             </Box>
           ),

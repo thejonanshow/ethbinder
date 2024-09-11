@@ -2,6 +2,7 @@ import styled, { useTheme } from 'styled-components';
 
 import { getThemePreference } from '../utils';
 import { HeaderButtons } from './Buttons';
+import { ETHlogo } from './ETHlogo';
 import { SnapLogo } from './SnapLogo';
 import { Toggle } from './Toggle';
 
@@ -36,6 +37,10 @@ const RightContainer = styled.div`
   align-items: center;
 `;
 
+const Span = styled.span`
+  color: ${(props) => props.theme.colors.primary?.default};
+`;
+
 export const Header = ({
   handleToggleClick,
 }: {
@@ -46,8 +51,8 @@ export const Header = ({
   return (
     <HeaderWrapper>
       <LogoWrapper>
-        <SnapLogo color={theme.colors.icon?.default} size={36} />
-        <Title>template-snap</Title>
+        <ETHlogo color={theme.colors.icon?.default} size={36} />
+        <Title><Span>ETH</Span>binder</Title>
       </LogoWrapper>
       <RightContainer>
         <Toggle

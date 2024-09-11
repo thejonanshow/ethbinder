@@ -15858,6 +15858,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-github-login@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "react-github-login@npm:1.0.3"
+  peerDependencies:
+    prop-types: ^15.5.10
+    react: ^15.6.1
+  checksum: 80fde42fcc9744b818965f73261dd6d8e47f687dc9d1a553cc6f5b1e84591fa584bc4f1bcb067d3092a6390ad674885ad1e5765b9405edead4d118936b17dcf8
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -16894,6 +16904,7 @@ __metadata:
     prettier-plugin-packagejson: ^2.2.18
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-github-login: ^1.0.3
     react-is: ^18.2.0
     rimraf: ^3.0.2
     styled-components: 5.3.3
