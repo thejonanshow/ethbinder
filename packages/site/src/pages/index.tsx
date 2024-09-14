@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
 
 import {
   ConnectButton,
@@ -6,7 +7,9 @@ import {
   ReconnectButton,
   BindAccountButton,
   Card,
-  GitHubLoginButton
+  GitHubForkButton,
+  GitHubIssueButton,
+  GitHubHandleCollector,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
 import {
@@ -15,6 +18,7 @@ import {
   useMetaMaskContext,
   useRequestSnap,
   useGitHubLogin,
+  useCheckRepoFork,
 } from '../hooks';
 import { isLocalSnap, shouldDisplayReconnectButton } from '../utils';
 
@@ -108,14 +112,63 @@ const Index = () => {
   const requestSnap = useRequestSnap();
   const gitHubLogin = useGitHubLogin();
   const invokeSnap = useInvokeSnap();
+  const checkRepoFork = useCheckRepoFork;
   const loggedInWithGitHub = (card) => { return card; };
 
   const isMetaMaskReady = isLocalSnap(defaultSnapOrigin)
     ? isFlask
     : snapsDetected;
 
-  const handleSendHelloClick = async () => {
-    await invokeSnap({ method: 'hello' });
+  const handleSendBindingClick = async () => {
+    try {
+      console.log("Invoking Snap...");
+
+      // Invoke the Snap to get the GitHub handle
+      const response = await invokeSnap({ method: 'getGitHubHandle' });
+
+      if (response && response.handle) {
+        console.log("GitHub Handle:", response.handle);
+
+        // Now request the user to sign the handle
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const address = accounts[0];
+
+        // Sign the GitHub handle using MetaMask's personal_sign method
+        const signature = await ethereum.request({
+          method: 'personal_sign',
+          params: [response.handle, address],
+        });
+
+        console.log("Signature:", signature);
+
+        // You can now use the GitHub handle and the signature
+        return { handle: response.handle, signature };
+      } else {
+        console.log("No GitHub handle received.");
+      }
+    } catch (error) {
+      console.error("Error invoking Snap or signing:", error);
+    }
+  };
+
+  const [handle, setHandle] = useState(null); // State to store the GitHub handle
+  const GitHubRepoChecker = ({ handle }) => {
+    const { checkRepoFork, hasForked, loading, error } = useCheckRepoFork();
+
+    useEffect(() => {
+      if (handle) {
+        checkRepoFork(handle); // Call the function when the handle is available
+      }
+    }, [handle]); // Re-run when the handle changes
+
+    return (
+      <div>
+      {loading && <p>Checking if the repo is forked...</p>}
+      {error && <p>Error: {error}</p>}
+      {hasForked === true && <p>You're FORKED!</p>}
+      {hasForked === false && <p>You haven't forked the repo yet!</p>}
+      </div>
+    );
   };
 
   return (
@@ -149,7 +202,7 @@ const Index = () => {
                 'This will fork the ETHbinder repository to your GitHub account and post a commit to the signatures branch, allowing us to verify both your wallet signature and your GitHub commit signature. The mapping of GitHub handles to Ethereum addresses is stored publicly on the blockchain so it may be independently verified.',
               button: (
                 <BindAccountButton
-                  onClick={handleSendHelloClick}
+                  onClick={handleSendBindingClick}
                   disabled={!installedSnap}
                 />
               ),
@@ -206,15 +259,27 @@ const Index = () => {
             disabled={!installedSnap}
           />
         )}
-        {loggedInWithGitHub && (
+        {(
           <Card
             content={{
-              title: 'Login with GitHub',
+              title: 'Fork ETHbinder',
               description:
-                'Connecting ETHbinder to MetaMask allows us to simplify the setup process for you. It also allows us to confirm that your commit signing key is yours.',
+                'Forking this repo to your account allows us to post an issue with your GitHub handle and a signature from your MetaMask wallet.',
               button: (
-                <GitHubLoginButton
+                <GitHubForkButton
                 />
+              ),
+            }}
+          />
+        )}
+        {(
+          <Card
+            content={{
+              title: 'Create Issue',
+              description:
+                'ETHbinder will post an issue to your new forked repo to enable verification. This issue includes your handle, your ETH address, and a signature from MetaMask. This data poses no security risk but you will have the opportunity to review it before posting it publicly.',
+              button: (
+                <GitHubIssueButton handle='thejonanshow' ethAddress="0x123" signature="signed" />
               ),
             }}
           />

@@ -6,6 +6,7 @@ import { ReactComponent as GitHubOctocat } from '../assets/github_octocat.svg';
 import { ReactComponent as Binding } from '../assets/binding.svg';
 import { useMetaMask, useRequestSnap } from '../hooks';
 import { shouldDisplayReconnectButton } from '../utils';
+import { useGitHubIssueGenerator } from '../hooks/useGitHubIssueGenerator';
 
 const Link = styled.a`
   display: flex;
@@ -78,6 +79,40 @@ export const InstallFlaskButton = () => (
     <ButtonText>Install MetaMask Flask</ButtonText>
   </Link>
 );
+
+export const GitHubForkButton = () => (
+  <Link href="https://github.com/thejonanshow/ethbinder/fork" target="_blank">
+    <GitHubOctocat />
+    <ButtonText>Fork ETHbinder</ButtonText>
+  </Link>
+);
+
+// export const GitHubIssueButton = ({ handle, ethAddress, signature }) => {
+//   const issueUrl = `https://github.com/${handle}/ethbinder/issues/new?title=ETHbinder%20Verification&body=%7B%22githubHandle%22:%22${handle}%22,%22ethAddress%22:%22${ethAddress}%22,%22signature%22:%22${signature}%22%7D`;
+
+//   return (
+//     <Link href={issueUrl} target="_blank">
+//       <GitHubOctocat />
+//       <ButtonText>Create Issue</ButtonText>
+//     </Link>
+//   );
+// };
+
+
+export const GitHubIssueButton = ({ handle, ethAddress, signature }) => {
+  // Use the issue generator hook to generate the issue URL
+  const { generateIssueUrl } = useGitHubIssueGenerator();
+
+  // Generate the GitHub issue URL dynamically
+  const issueUrl = generateIssueUrl(handle, ethAddress, signature);
+
+  return (
+    <Link href={issueUrl} target="_blank">
+      <GitHubOctocat />
+      <ButtonText>Create Issue</ButtonText>
+    </Link>
+  );
+};
 
 export const ConnectButton = (props: ComponentProps<typeof Button>) => {
   return (
