@@ -1,7 +1,7 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "eth-verification-worker"
 main = "src/index.ts"
-account_id = "<your-cloudflare-account-id>"
+account_id = "15107d881e3a48b7ce8a7d77c0fc54bb"
 compatibility_date = "2024-09-09"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
