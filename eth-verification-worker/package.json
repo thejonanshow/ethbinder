@@ -1,0 +1,37 @@
+{
+  "name": "eth-verification-worker",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "test": "vitest",
+    "cf-typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.4.5",
+    "@cloudflare/workers-types": "^4.20240909.0",
+    "@lavamoat/allow-scripts": "^3.2.1",
+    "@lavamoat/preinstall-always-fail": "^2.1.0",
+    "lavamoat": "^9.0.1",
+    "typescript": "^5.5.2",
+    "vitest": "1.5.0",
+    "wrangler": "^3.60.3"
+  },
+  "dependencies": {
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/keccak256": "^5.7.0",
+    "@ethersproject/strings": "^5.7.0",
+    "@ethersproject/transactions": "^5.7.0",
+    "@ethersproject/wallet": "^5.7.0"
+  },
+  "lavamoat": {
+    "allowScripts": {
+      "@lavamoat/preinstall-always-fail": false,
+      "vitest>vite>esbuild": false,
+      "wrangler>esbuild": false,
+      "wrangler>workerd": false
+    }
+  }
+}
