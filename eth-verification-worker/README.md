@@ -10,6 +10,8 @@ You can embed the dynamic verification shield directly into your GitHub reposito
 
 #### Example Badge
 
+![ETH Verification](https://eth-verification-worker.<your-workers-domain>.workers.dev/?handle=<your-github-handle>)
+
 Add the following code to your repository's `README.md` file to display the badge:
 
 ```markdown
