@@ -29,36 +29,36 @@ async function handleRequest(request: Request): Promise<Response> {
     if (!response.ok) return new Response('Unable to fetch issue from GitHub.', { status: 500 });
     const { ethAddress, signature } = JSON.parse(await response.json().body);
 
-    const badgeColor = verifySignature(githubHandle, ethAddress, signature) ? '51D06A' : 'E74C3C';
-    const badgeMessage = badgeColor === '51D06A' ? 'verified' : 'failed';
+    const isVerified = verifySignature(githubHandle, ethAddress, signature);
+    const message = isVerified ? 'verified' : 'failed';
+    const color = isVerified ? 'brightgreen' : 'red';
 
-    const svgBadge = generateBadge(badgeMessage, badgeColor);
+    // Return JSON for Shields.io
+    const badgeData = {
+      schemaVersion: 1,
+      label: 'eth',
+      message: message,
+      color: color
+    };
 
-    return new Response(svgBadge, {
-      headers: { 'content-type': 'image/svg+xml' }
+    return new Response(JSON.stringify(badgeData), {
+      headers: { 'content-type': 'application/json' }
     });
   } catch (error) {
-    const svgBadge = generateBadge('failed', 'E74C3C');
-    return new Response(svgBadge, {
-      headers: { 'content-type': 'image/svg+xml' }
+    const badgeData = {
+      schemaVersion: 1,
+      label: 'eth',
+      message: 'failed',
+      color: 'red'
+    };
+    return new Response(JSON.stringify(badgeData), {
+      headers: { 'content-type': 'application/json' }
     });
   }
 }
 
 function verifySignature(githubHandle: string, ethAddress: string, signature: string): boolean {
-  // Signature verification logic here
-  // Mocked for example
+  // Signature verification logic here (mocked for example)
   return ethAddress === '0x123';  // Mock check
-}
-
-function generateBadge(message: string, color: string): string {
-  return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="20">
-      <rect width="100" height="20" fill="#555"/>
-      <rect x="50" width="50" height="20" fill="#${color}"/>
-      <text x="25" y="14" fill="#fff" font-family="Verdana" font-size="11">eth</text>
-      <text x="65" y="14" fill="#fff" font-family="Verdana" font-size="11">${message}</text>
-    </svg>
-  `;
 }
 
