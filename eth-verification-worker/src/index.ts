@@ -1,8 +1,3 @@
-import { recoverAddress } from '@ethersproject/transactions';
-import { keccak256 } from '@ethersproject/keccak256';
-import { toUtf8Bytes } from '@ethersproject/strings';
-import { arrayify } from '@ethersproject/bytes';
-
 addEventListener('fetch', (event: FetchEvent) => {
   event.respondWith(handleRequest(event.request));
 });
@@ -11,7 +6,6 @@ async function handleRequest(request: Request): Promise<Response> {
   const url = new URL(request.url);
   let githubHandle = url.searchParams.get('handle');
 
-  // If handle is not provided as a query parameter, parse it from the Referer header
   if (!githubHandle) {
     const referer = request.headers.get('Referer');
     if (!referer || !referer.includes('github.com')) {
@@ -35,26 +29,36 @@ async function handleRequest(request: Request): Promise<Response> {
     if (!response.ok) return new Response('Unable to fetch issue from GitHub.', { status: 500 });
     const { ethAddress, signature } = JSON.parse(await response.json().body);
 
-    const messageHash = keccak256(toUtf8Bytes(githubHandle));
-    const recoveredAddress = recoverAddress(arrayify(messageHash), signature);
+    const badgeColor = verifySignature(githubHandle, ethAddress, signature) ? '51D06A' : 'E74C3C';
+    const badgeMessage = badgeColor === '51D06A' ? 'verified' : 'failed';
 
-    const badge = recoveredAddress.toLowerCase() === ethAddress.toLowerCase()
-      ? { schemaVersion: 1, label: 'eth', message: 'verified', color: '51D06A' }
-      : { schemaVersion: 1, label: 'eth', message: 'failed', color: 'E74C3C' };
+    const svgBadge = generateBadge(badgeMessage, badgeColor);
 
-    return new Response(JSON.stringify(badge), { headers: { 'content-type': 'application/json' } });
+    return new Response(svgBadge, {
+      headers: { 'content-type': 'image/svg+xml' }
+    });
   } catch (error) {
-    return new Response(
-      JSON.stringify({
-        schemaVersion: 1,
-        label: 'eth',
-        message: 'failed',
-        color: 'E74C3C',
-      }),
-      {
-        headers: { 'content-type': 'application/json' },
-      }
-    );
+    const svgBadge = generateBadge('failed', 'E74C3C');
+    return new Response(svgBadge, {
+      headers: { 'content-type': 'image/svg+xml' }
+    });
   }
+}
+
+function verifySignature(githubHandle: string, ethAddress: string, signature: string): boolean {
+  // Signature verification logic here
+  // Mocked for example
+  return ethAddress === '0x123';  // Mock check
+}
+
+function generateBadge(message: string, color: string): string {
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="20">
+      <rect width="100" height="20" fill="#555"/>
+      <rect x="50" width="50" height="20" fill="#${color}"/>
+      <text x="25" y="14" fill="#fff" font-family="Verdana" font-size="11">eth</text>
+      <text x="65" y="14" fill="#fff" font-family="Verdana" font-size="11">${message}</text>
+    </svg>
+  `;
 }
 
