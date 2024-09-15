@@ -110,10 +110,11 @@ const Index = () => {
   const { error } = useMetaMaskContext();
   const { isFlask, snapsDetected, installedSnap } = useMetaMask();
   const requestSnap = useRequestSnap();
-  const gitHubLogin = useGitHubLogin();
   const invokeSnap = useInvokeSnap();
-  const checkRepoFork = useCheckRepoFork;
-  const loggedInWithGitHub = (card) => { return card; };
+
+  const [handle, setHandle] = useState(null);
+  const [ethAddress, setEthAddress] = useState(null);
+  const [signature, setSignature] = useState(null);
 
   const isMetaMaskReady = isLocalSnap(defaultSnapOrigin)
     ? isFlask
@@ -123,17 +124,15 @@ const Index = () => {
     try {
       console.log("Invoking Snap...");
 
-      // Invoke the Snap to get the GitHub handle
       const response = await invokeSnap({ method: 'getGitHubHandle' });
 
       if (response && response.handle) {
         console.log("GitHub Handle:", response.handle);
 
-        // Now request the user to sign the handle
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         const address = accounts[0];
+        setEthAddress(address);
 
-        // Sign the GitHub handle using MetaMask's personal_sign method
         const signature = await ethereum.request({
           method: 'personal_sign',
           params: [response.handle, address],
@@ -141,7 +140,9 @@ const Index = () => {
 
         console.log("Signature:", signature);
 
-        // You can now use the GitHub handle and the signature
+        setHandle(response.handle);
+        setSignature(signature);
+
         return { handle: response.handle, signature };
       } else {
         console.log("No GitHub handle received.");
@@ -279,7 +280,11 @@ const Index = () => {
               description:
                 'ETHbinder will post an issue to your new forked repo to enable verification. This issue includes your handle, your ETH address, and a signature from MetaMask. This data poses no security risk but you will have the opportunity to review it before posting it publicly.',
               button: (
-                <GitHubIssueButton handle='thejonanshow' ethAddress="0x123" signature="signed" />
+                <GitHubIssueButton
+                  handle={handle}
+                  ethAddress={ethAddress}
+                  signature={signature}
+                />
               ),
             }}
           />
