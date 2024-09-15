@@ -1,0 +1,8 @@
+{
+  "label" : "ethbinder",
+  "message" : "verified",
+  "labelColor" : "#555",
+  "logo" : "ethereum",
+  "links" : [ "https://github.com/thejonanshow", "https://github.com/thejonanshow/ethbinder"],
+  "style" : "flat"
+}
