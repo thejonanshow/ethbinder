@@ -5,7 +5,8 @@ import {
   ConnectButton,
   InstallFlaskButton,
   ReconnectButton,
-  BindAccountButton,
+  ConnectGitHubButton,
+  EditGitHubButton,
   Card,
   GitHubForkButton,
   GitHubIssueButton,
@@ -112,7 +113,6 @@ const Index = () => {
   const requestSnap = useRequestSnap();
   const invokeSnap = useInvokeSnap();
 
-  const [handle, setHandle] = useState(null);
   const [ethAddress, setEthAddress] = useState(null);
   const [signature, setSignature] = useState(null);
 
@@ -153,23 +153,17 @@ const Index = () => {
   };
 
   const [handle, setHandle] = useState(null); // State to store the GitHub handle
-  const GitHubRepoChecker = ({ handle }) => {
-    const { checkRepoFork, hasForked, loading, error } = useCheckRepoFork();
+  const [isForked, setIsForked] = useState(false); // Define isForked state
+  const GitHubRepoChecker = ({ githubHandle, onForkStatusChange }) => {
+    const { hasForked, loading, error } = useCheckRepoFork(githubHandle);
 
     useEffect(() => {
-      if (handle) {
-        checkRepoFork(handle); // Call the function when the handle is available
+      if (!loading && !error) {
+        onForkStatusChange(hasForked);
       }
-    }, [handle]); // Re-run when the handle changes
+    }, [hasForked, loading, error, onForkStatusChange]);
 
-    return (
-      <div>
-      {loading && <p>Checking if the repo is forked...</p>}
-      {error && <p>Error: {error}</p>}
-      {hasForked === true && <p>You're FORKED!</p>}
-      {hasForked === false && <p>You haven't forked the repo yet!</p>}
-      </div>
-    );
+    return null; // This component doesn't render anything itself
   };
 
   return (
@@ -195,21 +189,56 @@ const Index = () => {
             to help prevent the accidental loss of funds by providing you with a provably canonical address.
           </p>
         </Notice>
-        {installedSnap && loggedInWithGitHub (
+        {handle && (
+          <GitHubRepoChecker
+          githubHandle={handle}
+          onForkStatusChange={setIsForked} // This will update isForked state
+          />
+        )}
+        {handle && !isForked && (
           <Card
             content={{
-              title: 'Create Ethereum Binding',
+              title: 'Fork ETHbinder',
               description:
-                'This will fork the ETHbinder repository to your GitHub account and post a commit to the signatures branch, allowing us to verify both your wallet signature and your GitHub commit signature. The mapping of GitHub handles to Ethereum addresses is stored publicly on the blockchain so it may be independently verified.',
+                'Forking this repo to your account allows us to post an issue with your GitHub handle and a signature from your MetaMask wallet.',
               button: (
-                <BindAccountButton
+                <GitHubForkButton
+                />
+              ),
+            }}
+          />
+        )}
+        {handle && isForked && (
+          <Card
+            content={{
+              title: 'Create Issue',
+              description:
+                'This posts an issue to your fork with the details necessary for verification. you will have the opportunity to review it before posting.',
+              button: (
+                <GitHubIssueButton
+                  handle={handle}
+                  ethAddress={ethAddress}
+                  signature={signature}
+                />
+              ),
+            }}
+          />
+        )}
+        {installedSnap && !handle && (
+          <Card
+            content={{
+              title: 'Connect GitHub',
+              description:
+                'Submit your GitHub handle so ETHbinder can find your public page and verify the signature we create. Your handle is encrypted and stored in your wallet, ETHbinder itself does not store any of your data.',
+              button: (
+                <ConnectGitHubButton
                   onClick={handleSendBindingClick}
                   disabled={!installedSnap}
                 />
               ),
             }}
             disabled={!installedSnap}
-            fullWidth={true}
+            fullWidth={false}
           />
         )}
         {error && (
@@ -226,6 +255,23 @@ const Index = () => {
               button: <InstallFlaskButton />,
             }}
             fullWidth
+          />
+        )}
+        {installedSnap && handle && (
+          <Card
+            content={{
+              title: 'Edit GitHub Handle',
+              description:
+                'Modify the encrypted GitHub handle we stored in your MetaMask.',
+              button: (
+                <EditGitHubButton
+                  onClick={handleSendBindingClick}
+                  disabled={!installedSnap}
+                />
+              ),
+            }}
+            disabled={!installedSnap}
+            fullWidth={false}
           />
         )}
         {!installedSnap && (
@@ -247,7 +293,7 @@ const Index = () => {
         {shouldDisplayReconnectButton(installedSnap) && (
           <Card
             content={{
-              title: 'Reconnect',
+              title: 'Reconnect MetaMask',
               description:
                 'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
               button: (
@@ -258,35 +304,6 @@ const Index = () => {
               ),
             }}
             disabled={!installedSnap}
-          />
-        )}
-        {(
-          <Card
-            content={{
-              title: 'Fork ETHbinder',
-              description:
-                'Forking this repo to your account allows us to post an issue with your GitHub handle and a signature from your MetaMask wallet.',
-              button: (
-                <GitHubForkButton
-                />
-              ),
-            }}
-          />
-        )}
-        {(
-          <Card
-            content={{
-              title: 'Create Issue',
-              description:
-                'ETHbinder will post an issue to your new forked repo to enable verification. This issue includes your handle, your ETH address, and a signature from MetaMask. This data poses no security risk but you will have the opportunity to review it before posting it publicly.',
-              button: (
-                <GitHubIssueButton
-                  handle={handle}
-                  ethAddress={ethAddress}
-                  signature={signature}
-                />
-              ),
-            }}
           />
         )}
       </CardContainer>

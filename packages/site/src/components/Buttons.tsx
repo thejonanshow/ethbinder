@@ -87,23 +87,9 @@ export const GitHubForkButton = () => (
   </Link>
 );
 
-// export const GitHubIssueButton = ({ handle, ethAddress, signature }) => {
-//   const issueUrl = `https://github.com/${handle}/ethbinder/issues/new?title=ETHbinder%20Verification&body=%7B%22githubHandle%22:%22${handle}%22,%22ethAddress%22:%22${ethAddress}%22,%22signature%22:%22${signature}%22%7D`;
-
-//   return (
-//     <Link href={issueUrl} target="_blank">
-//       <GitHubOctocat />
-//       <ButtonText>Create Issue</ButtonText>
-//     </Link>
-//   );
-// };
-
-
 export const GitHubIssueButton = ({ handle, ethAddress, signature }) => {
-  // Use the issue generator hook to generate the issue URL
   const { generateIssueUrl } = useGitHubIssueGenerator();
 
-  // Generate the GitHub issue URL dynamically
   const issueUrl = generateIssueUrl(handle, ethAddress, signature);
 
   return (
@@ -150,11 +136,20 @@ export const GitHubLogoutButton = (props: ComponentProps<typeof Button>) => {
   );
 };
 
-export const BindAccountButton = (props: ComponentProps<typeof Button>) => {
+export const ConnectGitHubButton = (props: ComponentProps<typeof Button>) => {
   return (
     <Button {...props}>
-      <Binding />
-      <ButtonText>Bind Account</ButtonText>
+      <GitHubOctocat />
+      <ButtonText>Connect GitHub</ButtonText>
+    </Button>
+  );
+};
+
+export const EditGitHubButton = (props: ComponentProps<typeof Button>) => {
+  return (
+    <Button {...props}>
+      <GitHubOctocat />
+      <ButtonText>Edit GitHub Handle</ButtonText>
     </Button>
   );
 };
