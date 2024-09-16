@@ -12,7 +12,7 @@ You can embed the dynamic verification shield directly into your GitHub reposito
 
 ![ETHbinder Verification Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Feth-verification-worker.jonanscheffler.workers.dev%3Fhandle%3Dthejonanshow)
 
-![ETHbinder Verification Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Feth-verification-worker.jonanscheffler.workers.dev)
+![ETHbinder Verification Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Feth-verification-worker.jonanscheffler.workers.dev%3Fhandle%3Ddefunkt)
 
 Add the following code to your repository's `README.md` file to display the badge:
 
