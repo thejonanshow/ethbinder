@@ -1,8 +1,1 @@
-{
-  "label" : "ethbinder",
-  "message" : "verified",
-  "labelColor" : "#555",
-  "logo" : "ethereum",
-  "links" : [ "https://github.com/thejonanshow", "https://github.com/thejonanshow/ethbinder"],
-  "style" : "flat"
-}
+{"badgeData":{"label":"ethbinder","message":"verified","labelColor":"#555","color":"#4c1","logo":"ethereum","links":["https://github.com/thejonanshow/ethbinder"],"style":"flat"}}
