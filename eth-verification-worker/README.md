@@ -10,9 +10,11 @@ You can embed the dynamic verification shield directly into your GitHub reposito
 
 #### Example Badge
 
-![Verified Badge](https://img.shields.io/endpoint?url=https://eth-verification-worker.jonanscheffler.workers.dev)
+![ETHbinder Verification Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Feth-verification-worker.jonanscheffler.workers.dev%3Fhandle%3Dthejonanshow)
+
+![ETHbinder Verification Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Feth-verification-worker.jonanscheffler.workers.dev)
 
 Add the following code to your repository's `README.md` file to display the badge:
 
 ```markdown
-![ETH Verification](https://img.shields.io/endpoint?url=https://eth-verification-worker.jonanscheffler.workers.dev/?handle=thejonanshow&cache-bust=1)
+![ETHbinder Verification Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Feth-verification-worker.jonanscheffler.workers.dev)

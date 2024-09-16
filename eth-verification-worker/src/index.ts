@@ -52,6 +52,7 @@ export default {
     const sendBadgeResponse = (message: string, success: Boolean, options: Object) => {
       const badgeData = buildBadge(message, success, options);
       const respData = debug ? { ...badgeData, logs } : { ...badgeData }
+      options.status = 200;
       return new Response(JSON.stringify(respData), options)
     }
 
