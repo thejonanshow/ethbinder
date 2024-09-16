@@ -45,7 +45,8 @@ export default {
         labelColor: '#5177D0',  // Optional label color
         color: success ? '#51D06A' : '#D06A51',  // Green for verified, red for invalid
         namedLogo: 'ethereum',
-        style: 'flat'  // Optional badge style
+        style: 'flat',
+        cacheSeconds: 300
       };
     }
 
@@ -53,6 +54,13 @@ export default {
       const badgeData = buildBadge(message, success, options);
       const respData = debug ? { ...badgeData, logs } : { ...badgeData }
       options.status = 200;
+      options.headers = {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',  // Prevent caching
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Last-Modified': new Date().toUTCString()
+      }
       return new Response(JSON.stringify(respData), options)
     }
 
