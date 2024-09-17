@@ -163,7 +163,7 @@ const Index = () => {
       }
     }, [hasForked, loading, error, onForkStatusChange]);
 
-    return null; // This component doesn't render anything itself
+    return null;
   };
 
   return (
