@@ -75,7 +75,8 @@
       "memoizee>es5-ext": false,
       "msgpackr-extract": false,
       "swc-loader>@swc/core": false,
-      "timers-ext>es5-ext": false
+      "timers-ext>es5-ext": false,
+      "gatsby>gatsby-cli": false
     }
   },
   "main": ".eslintrc.js",
@@ -471,7 +472,7 @@
     "function.prototype.name": "^1.1.6",
     "functional-red-black-tree": "^1.0.1",
     "functions-have-names": "^1.2.3",
-    "gatsby": "^5.13.3",
+    "gatsby": "^5.13.7",
     "gatsby-cli": "^5.13.2",
     "gatsby-core-utils": "^4.13.1",
     "gatsby-graphiql-explorer": "^3.13.1",
@@ -515,8 +516,8 @@
     "got": "^11.8.6",
     "graceful-fs": "^4.2.11",
     "graphemer": "^1.4.0",
-    "graphql": "^16.8.1",
-    "graphql-compose": "^9.0.10",
+    "graphql": "^16.7.1",
+    "graphql-compose": "^9.0.11",
     "graphql-http": "^1.22.0",
     "graphql-tag": "^2.12.6",
     "graphql-type-json": "^0.3.2",
