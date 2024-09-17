@@ -1,5 +1,5 @@
 import type { FunctionComponent, ReactNode } from 'react';
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { dark, light } from './config/theme';
@@ -18,6 +18,10 @@ export const ToggleThemeContext = createContext<ToggleTheme>(
 
 export const Root: FunctionComponent<RootProps> = ({ children }) => {
   const [darkTheme, setDarkTheme] = useState(getThemePreference());
+
+  useEffect(() => {
+    console.log(`Current theme is: ${darkTheme ? 'Dark' : 'Light'}`);
+  }, [darkTheme]);
 
   const toggleTheme: ToggleTheme = () => {
     setLocalStorage('theme', darkTheme ? 'light' : 'dark');
