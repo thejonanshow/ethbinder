@@ -46,7 +46,7 @@ export default {
         color: success ? '#51D06A' : '#D06A51',  // Green for verified, red for invalid
         namedLogo: 'ethereum',
         style: 'flat',
-        cacheSeconds: 300
+        cacheSeconds: 300 // Undocumented min for badges.io per https://github.com/badges/shields/issues/6310
       };
     }
 
