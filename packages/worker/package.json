@@ -1,5 +1,5 @@
 {
-  "name": "eth-verification-worker",
+  "name": "worker",
   "version": "0.0.0",
   "private": true,
   "scripts": {

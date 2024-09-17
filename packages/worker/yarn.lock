@@ -2046,26 +2046,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eth-verification-worker@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "eth-verification-worker@workspace:."
-  dependencies:
-    "@cloudflare/vitest-pool-workers": ^0.4.5
-    "@cloudflare/workers-types": ^4.20240909.0
-    "@ethersproject/bytes": ^5.7.0
-    "@ethersproject/keccak256": ^5.7.0
-    "@ethersproject/strings": ^5.7.0
-    "@ethersproject/transactions": ^5.7.0
-    "@ethersproject/wallet": ^5.7.0
-    "@lavamoat/allow-scripts": ^3.2.1
-    "@lavamoat/preinstall-always-fail": ^2.1.0
-    lavamoat: ^9.0.1
-    typescript: ^5.5.2
-    vitest: 1.5.0
-    wrangler: ^3.60.3
-  languageName: unknown
-  linkType: soft
-
 "execa@npm:^8.0.1":
   version: 8.0.1
   resolution: "execa@npm:8.0.1"
@@ -4080,6 +4060,26 @@ __metadata:
   checksum: 58ebbf406e243ace97083027f0df7ff4c2108baf2595bb29317718ef207cc7a8104e41b711ff65d6fa354f25daa8756b67f2f04931a4fd6ba9d13ae8197496fb
   languageName: node
   linkType: hard
+
+"worker@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "worker@workspace:."
+  dependencies:
+    "@cloudflare/vitest-pool-workers": ^0.4.5
+    "@cloudflare/workers-types": ^4.20240909.0
+    "@ethersproject/bytes": ^5.7.0
+    "@ethersproject/keccak256": ^5.7.0
+    "@ethersproject/strings": ^5.7.0
+    "@ethersproject/transactions": ^5.7.0
+    "@ethersproject/wallet": ^5.7.0
+    "@lavamoat/allow-scripts": ^3.2.1
+    "@lavamoat/preinstall-always-fail": ^2.1.0
+    lavamoat: ^9.0.1
+    typescript: ^5.5.2
+    vitest: 1.5.0
+    wrangler: ^3.60.3
+  languageName: unknown
+  linkType: soft
 
 "workerd@npm:1.20240909.0":
   version: 1.20240909.0
