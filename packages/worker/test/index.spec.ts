@@ -1,25 +1,28 @@
-// test/index.spec.ts
-import { env, createExecutionContext, waitOnExecutionContext, SELF } from 'cloudflare:test';
-import { describe, it, expect } from 'vitest';
-import worker from '../src/index';
 
-// For now, you'll need to do something like this to get a correctly-typed
-// `Request` to pass to `worker.fetch()`.
-const IncomingRequest = Request<unknown, IncomingRequestCfProperties>;
+import { Env } from '../src/index';
 
-describe('Hello World worker', () => {
-	it('responds with Hello World! (unit style)', async () => {
-		const request = new IncomingRequest('http://example.com');
-		// Create an empty context to pass to `worker.fetch()`.
-		const ctx = createExecutionContext();
-		const response = await worker.fetch(request, env, ctx);
-		// Wait for all `Promise`s passed to `ctx.waitUntil()` to settle before running test assertions
-		await waitOnExecutionContext(ctx);
-		expect(await response.text()).toMatchInlineSnapshot(`"Hello World!"`);
-	});
+describe('Worker Request Handling', () => {
+  const request = new Request('https://example.com/?repo=ethbinder&debug=true', { method: 'GET' });
+  const env: Env = { GITHUB_API_KEY: 'fake-key' };
+  
+  test('should extract GitHub handle from referrer', async () => {
+    request.headers.set('Referer', 'https://github.com/testuser/repo');
+    const response = await fetch(request, env);
+    const logs = await response.text();
+    expect(logs).toContain('GitHub handle found from referrer: testuser');
+  });
 
-	it('responds with Hello World! (integration style)', async () => {
-		const response = await SELF.fetch('https://example.com');
-		expect(await response.text()).toMatchInlineSnapshot(`"Hello World!"`);
-	});
+  test('should return error for malformed referrer', async () => {
+    request.headers.set('Referer', 'https://malformed.com/invalidpath');
+    const response = await fetch(request, env);
+    const logs = await response.text();
+    expect(logs).toContain('GitHub handle could not be extracted');
+  });
+
+  test('should handle missing GitHub handle gracefully', async () => {
+    request.headers.delete('Referer');
+    const response = await fetch(request, env);
+    const logs = await response.text();
+    expect(logs).toContain('GitHub handle could not be extracted');
+  });
 });

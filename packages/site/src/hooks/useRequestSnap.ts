@@ -30,7 +30,7 @@ export const useRequestSnap = (
     })) as Record<string, Snap>;
 
     // Updates the `installedSnap` context variable since we just installed the Snap.
-    setInstalledSnap(snaps?.[snapId] ?? null);
+    if (snaps && snaps[snapId]) { setInstalledSnap(snaps[snapId]); } else { throw new Error(`Failed to install Snap: ${snapId}`); }
   };
 
   return requestSnap;

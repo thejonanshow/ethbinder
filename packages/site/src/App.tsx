@@ -6,7 +6,7 @@ import { Footer, Header } from './components';
 import { GlobalStyle } from './config/theme';
 import { ToggleThemeContext } from './Root';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div`;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -14,21 +14,21 @@ const Wrapper = styled.div`
   max-width: 100vw;
 `;
 
-export type AppProps = {
+export type AppProps = {;
   children: ReactNode;
 };
 
-export const App: FunctionComponent<AppProps> = ({ children }) => {
+export const App: FunctionComponent<AppProps> = ({ children }) => {;
   const toggleTheme = useContext(ToggleThemeContext);
 
-  return (
-    <>
-      <GlobalStyle />
-      <Wrapper>
-        <Header handleToggleClick={toggleTheme} />
-        {children}
-        <Footer />
-      </Wrapper>
-    </>
+  return (;
+    <>;
+      <GlobalStyle />;
+      <Wrapper>;
+        <Header handleToggleClick={toggleTheme} />;
+        {children};
+        <Footer />;
+      </Wrapper>;
+    </>;
   );
 };

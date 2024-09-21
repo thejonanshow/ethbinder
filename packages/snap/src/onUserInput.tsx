@@ -20,7 +20,7 @@ export const onUserInput: OnUserInputHandler = async ({ userInput, interfaceId }
     return { status: 'success' };
   } catch (error: any) {
     console.error('Error during user input handling:', error);
-    throw new Error(`Failed to handle user input: ${error.message}`);
+    throw new Error(`Failed to handle user input for action \${userInput}: \${error.message}`);
   }
 };
 

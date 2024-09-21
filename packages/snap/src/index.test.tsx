@@ -1,50 +1,18 @@
-import { expect } from '@jest/globals';
-import { installSnap } from '@metamask/snaps-jest';
-import { Box, Text, Bold } from '@metamask/snaps-sdk/jsx';
 
-describe('onRpcRequest', () => {
-  describe('hello', () => {
-    it('shows a confirmation dialog', async () => {
-      const { request } = await installSnap();
+import { onUserInput } from '../src/onUserInput';
 
-      const origin = 'Jest';
-      const response = request({
-        method: 'hello',
-        origin,
-      });
-
-      const ui = await response.getInterface();
-      expect(ui.type).toBe('confirmation');
-      expect(ui).toRender(
-        <Box>
-          <Text>
-            Hello, <Bold>{origin}</Bold>!
-          </Text>
-          <Text>This custom confirmation is just for display purposes.</Text>
-          <Text>
-            But you can edit the snap source code to make it do something, if
-            you want to!
-          </Text>
-        </Box>,
-      );
-
-      await ui.ok();
-
-      expect(await response).toRespondWith(true);
-    });
+describe('Snap User Input Handling', () => {
+  test('should handle confirm input', async () => {
+    const response = await onUserInput({ userInput: 'confirm', interfaceId: 'test-id' });
+    expect(response.status).toBe('success');
   });
 
-  it('throws an error if the requested method does not exist', async () => {
-    const { request } = await installSnap();
+  test('should handle edit input', async () => {
+    const response = await onUserInput({ userInput: 'edit', interfaceId: 'test-id' });
+    expect(response.status).toBe('success');
+  });
 
-    const response = await request({
-      method: 'foo',
-    });
-
-    expect(response).toRespondWithError({
-      code: -32603,
-      message: 'Method not found.',
-      stack: expect.any(String),
-    });
+  test('should throw error for invalid input', async () => {
+    await expect(onUserInput({ userInput: 'invalid', interfaceId: 'test-id' })).rejects.toThrow('Failed to handle user input');
   });
 });

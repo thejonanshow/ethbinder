@@ -30,7 +30,7 @@ export const useRequest = () => {
 
       return data;
     } catch (requestError: any) {
-      setError(requestError);
+      setError(new Error(`MetaMask request failed for method: ${method}, params: ${JSON.stringify(params)}. Error: ${requestError.message}`));
 
       return null;
     }

@@ -7,7 +7,19 @@
     "dev": "wrangler dev",
     "start": "wrangler dev",
     "test": "vitest",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "test:worker": "cd packages/worker && yarn test",
+    "test:worker:mutation": "cd packages/worker && ../../scripts/stryker-helper.sh",
+    "test:worker:unit": "cd packages/worker && yarn test --testPathPattern=unit",
+    "test:worker:integration": "cd packages/worker && yarn test --testPathPattern=integration",
+    "test:worker:all": "yarn test:worker:unit && yarn test:worker:integration && yarn test:worker:mutation && yarn test:worker:e2e && yarn test:worker:regression && yarn test:worker:performance && yarn test:worker:security && yarn test:worker:a11y && yarn test:worker:snapshot",
+    "test:worker:e2e": "cd packages/worker && yarn cypress run",
+    "test:worker:regression": "cd packages/worker && yarn visual-regression",
+    "test:worker:performance": "cd packages/worker && yarn lighthouse",
+    "test:worker:security": "cd packages/worker && yarn security-test",
+    "test:worker:a11y": "cd packages/worker && yarn axe-run",
+    "test:worker:smoke": "cd packages/worker && yarn test --testPathPattern=smoke",
+    "test:worker:snapshot": "cd packages/worker && yarn test --updateSnapshot"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.4.5",

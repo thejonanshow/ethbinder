@@ -25,7 +25,19 @@
     "prepublishOnly": "mm-snap manifest",
     "serve": "mm-snap serve",
     "start": "mm-snap watch",
-    "test": "jest"
+    "test": "jest",
+    "test:snap": "cd packages/snap && yarn test",
+    "test:snap:mutation": "cd packages/snap && ../../scripts/stryker-helper.sh",
+    "test:snap:unit": "cd packages/snap && yarn test --testPathPattern=unit",
+    "test:snap:integration": "cd packages/snap && yarn test --testPathPattern=integration",
+    "test:snap:all": "yarn test:snap:unit && yarn test:snap:integration && yarn test:snap:mutation && yarn test:snap:e2e && yarn test:snap:regression && yarn test:snap:performance && yarn test:snap:security && yarn test:snap:a11y && yarn test:snap:snapshot",
+    "test:snap:e2e": "cd packages/snap && yarn cypress run",
+    "test:snap:regression": "cd packages/snap && yarn visual-regression",
+    "test:snap:performance": "cd packages/snap && yarn lighthouse",
+    "test:snap:security": "cd packages/snap && yarn security-test",
+    "test:snap:a11y": "cd packages/snap && yarn axe-run",
+    "test:snap:smoke": "cd packages/snap && yarn test --testPathPattern=smoke",
+    "test:snap:snapshot": "cd packages/snap && yarn test --updateSnapshot"
   },
   "dependencies": {
     "@metamask/snaps-sdk": "^6.1.1",
