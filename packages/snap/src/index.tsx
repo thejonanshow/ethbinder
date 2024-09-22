@@ -5,26 +5,19 @@ import { Box, Heading, Text } from '@metamask/snaps-sdk/jsx';
  * The Snap's RPC request handler.
  */
 export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
-  try {
-    console.log('Received request:', request);
+  console.log('Received request:', request);
 
+  try {
     switch (request.method) {
       case 'getGitHubHandle':
-        console.log('Fetching GitHub handle...');
-
-        // Retrieve the current stored state and log it
         const storedState = await snap.request({
           method: 'snap_manageState',
           params: { operation: 'get' },
         });
-        console.log('Current stored state:', JSON.stringify(storedState));
 
-        let handle = storedState ? storedState.handle : null;
+        let handle = storedState?.handle ?? null;
 
         if (handle) {
-          console.log('Stored GitHub handle found:', handle);
-
-          // Show the handle confirmation dialog
           const response = await snap.request({
             method: 'snap_dialog',
             params: {
@@ -38,15 +31,11 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
             },
           });
 
-          console.log('User response:', response);
-
           if (response) {
-            // User confirmed, return the GitHub handle
             return { handle };
           }
         }
 
-        // If no handle is stored or the user chooses to edit, prompt for a new handle
         handle = await snap.request({
           method: 'snap_dialog',
           params: {
@@ -61,14 +50,11 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
           },
         });
 
-        console.log('New GitHub handle input:', handle);
-
         if (!handle || handle.trim() === '') {
-          console.log('No input received or user canceled the dialog.');
+          console.log('No valid input received.');
           return { handle: null };
         }
 
-        // Store the new handle in the Snap's state
         await snap.request({
           method: 'snap_manageState',
           params: {
@@ -77,21 +63,14 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
           },
         });
 
-        console.log('GitHub handle stored in Snap state:', handle);
-
-        // Return the new handle
         return { handle };
 
       default:
-        console.log(`Unknown method: ${request.method}`);
-        throw new Error(`Method ${request.method} not found.`);
+        throw new Error(`Method ${request.method} not supported.`);
     }
   } catch (error: any) {
-    console.error('Error during Snap execution:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
-    console.error('Error stack trace:', error.stack || 'No stack trace available');
-
-    const errorMessage = error.message || 'Unknown error occurred';
-    throw new Error(`Snap dialog failed: ${errorMessage}`);
+    console.error('Error in Snap execution:', error);
+    throw new Error(`Snap execution failed: ${error.message}`);
   }
 };
 

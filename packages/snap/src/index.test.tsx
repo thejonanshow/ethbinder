@@ -1,18 +1,91 @@
+import { onRpcRequest } from './onUserInput';
 
-import { onUserInput } from '../src/onUserInput';
+describe('onRpcRequest', () => {
+  const originalLog = console.log;
+  const originalError = console.error;
 
-describe('Snap User Input Handling', () => {
-  test('should handle confirm input', async () => {
-    const response = await onUserInput({ userInput: 'confirm', interfaceId: 'test-id' });
-    expect(response.status).toBe('success');
+  beforeAll(() => {
+    console.log = jest.fn();
+    console.error = jest.fn();
   });
 
-  test('should handle edit input', async () => {
-    const response = await onUserInput({ userInput: 'edit', interfaceId: 'test-id' });
-    expect(response.status).toBe('success');
+  afterAll(() => {
+    console.log = originalLog;
+    console.error = originalError;
   });
 
-  test('should throw error for invalid input', async () => {
-    await expect(onUserInput({ userInput: 'invalid', interfaceId: 'test-id' })).rejects.toThrow('Failed to handle user input');
+  it('handles valid request with method confirm', async () => {
+    const result = await onRpcRequest({
+      origin: 'origin',
+      request: {
+        id: 1,
+        jsonrpc: '2.0',
+        method: 'confirm',
+        params: { userInput: 'test input', interfaceId: 'expectedId' },
+      },
+    });
+    expect(result).toEqual({
+      status: 'success',
+      message: 'GitHub handle confirmed',
+    });
+  });
+
+  it('handles valid request with method edit', async () => {
+    const result = await onRpcRequest({
+      origin: 'origin',
+      request: {
+        id: 2,
+        jsonrpc: '2.0',
+        method: 'edit',
+        params: { userInput: 'test input', interfaceId: 'anotherInterfaceId' },
+      },
+    });
+    expect(result).toEqual({
+      status: 'success',
+      message: 'GitHub handle editing initiated',
+    });
+  });
+
+  it('throws error for unknown method', async () => {
+    await expect(
+      onRpcRequest({
+        origin: 'origin',
+        request: {
+          id: 3,
+          jsonrpc: '2.0',
+          method: 'unknownMethod',
+          params: { userInput: 'test input', interfaceId: 'unknownId' },
+        },
+      }),
+    ).rejects.toThrow('Unknown method: unknownMethod');
+  });
+
+  it('throws error for empty user input', async () => {
+    await expect(
+      onRpcRequest({
+        origin: 'origin',
+        request: {
+          id: 4,
+          jsonrpc: '2.0',
+          method: 'confirm',
+          params: { userInput: '', interfaceId: 'expectedId' },
+        },
+      }),
+    ).rejects.toThrow('Invalid user input');
+  });
+
+  it('throws error for non-string user input', async () => {
+    await expect(
+      onRpcRequest({
+        origin: 'origin',
+        request: {
+          id: 5,
+          jsonrpc: '2.0',
+          method: 'confirm',
+          params: { userInput: 123 as any, interfaceId: 'expectedId' },
+        },
+      }),
+    ).rejects.toThrow('Invalid user input');
   });
 });
+
