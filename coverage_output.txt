@@ -1,0 +1,61 @@
+------------------------------|---------|----------|---------|---------|-------------------
+File                          | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+------------------------------|---------|----------|---------|---------|-------------------
+All files                     |    1.87 |        5 |    0.66 |    2.05 |                   
+ site                         |       0 |      100 |     100 |       0 |                   
+  gatsby-config.ts            |       0 |      100 |     100 |       0 | 3                 
+ site/.cache/page-ssr         |       0 |        0 |       0 |       0 |                   
+  index.d.ts                  |       0 |        0 |       0 |       0 |                   
+ site/.cache/query-engine     |       0 |        0 |       0 |       0 |                   
+  index.d.ts                  |       0 |        0 |       0 |       0 |                   
+ site/src/components          |       0 |        0 |       0 |       0 |                   
+  Buttons.tsx                 |       0 |        0 |       0 |       0 | 11-213            
+  Card.tsx                    |       0 |        0 |       0 |       0 | 14-53             
+  ETHlogo.tsx                 |       0 |      100 |       0 |       0 | 1-8               
+  Footer.tsx                  |       0 |      100 |       0 |       0 | 7-37              
+  GitHubHandleCollector.tsx   |       0 |        0 |       0 |       0 | 1-25              
+  Header.tsx                  |       0 |      100 |       0 |       0 | 9-51              
+  MetaMask.tsx                |       0 |      100 |       0 |       0 | 1-2               
+  PoweredBy.tsx               |       0 |      100 |       0 |       0 | 1-2               
+  SnapLogo.tsx                |       0 |      100 |       0 |       0 | 1-8               
+  Toggle.tsx                  |       0 |        0 |       0 |       0 | 8-106             
+  index.ts                    |       0 |        0 |       0 |       0 |                   
+ site/src/config              |       0 |        0 |       0 |       0 |                   
+  index.ts                    |       0 |        0 |       0 |       0 |                   
+  snap.ts                     |       0 |        0 |     100 |       0 | 11                
+  theme.ts                    |       0 |      100 |       0 |       0 | 4-184             
+ site/src/hooks               |       0 |        0 |       0 |       0 |                   
+  MetamaskContext.tsx         |       0 |        0 |       0 |       0 | 16-73             
+  index.ts                    |       0 |        0 |       0 |       0 |                   
+  useCheckRepoFork.ts         |       0 |        0 |       0 |       0 | 3-38              
+  useGitHubIssueGenerator.tsx |       0 |      100 |       0 |       0 | 2-58              
+  useGitHubLogin.ts           |       0 |        0 |       0 |       0 | 3-11              
+  useInvokeSnap.ts            |       0 |        0 |       0 |       0 | 16-36             
+  useMetaMask.ts              |       0 |        0 |       0 |       0 | 12-55             
+  useRequest.ts               |       0 |        0 |       0 |       0 | 12-39             
+  useRequestSnap.ts           |       0 |        0 |       0 |       0 | 14-36             
+ site/src/pages               |       0 |        0 |       0 |       0 |                   
+  index.tsx                   |       0 |        0 |       0 |       0 | 26-169            
+ site/src/types               |       0 |        0 |       0 |       0 |                   
+  custom.d.ts                 |       0 |        0 |       0 |       0 |                   
+  index.ts                    |       0 |        0 |       0 |       0 |                   
+  snap.ts                     |       0 |        0 |       0 |       0 |                   
+  styled.d.ts                 |       0 |        0 |       0 |       0 |                   
+  svg.d.ts                    |       0 |        0 |       0 |       0 |                   
+ site/src/utils               |       0 |        0 |       0 |       0 |                   
+  button.ts                   |       0 |        0 |       0 |       0 | 4-5               
+  index.ts                    |       0 |        0 |       0 |       0 |                   
+  localStorage.ts             |       0 |        0 |       0 |       0 | 7-32              
+  metamask.ts                 |       0 |        0 |       0 |       0 | 16-118            
+  snap.ts                     |       0 |      100 |       0 |       0 | 7                 
+  theme.ts                    |       0 |        0 |       0 |       0 | 9-26              
+ snap                         |       0 |      100 |     100 |       0 |                   
+  snap.config.ts              |       0 |      100 |     100 |       0 | 4                 
+ snap/src                     |   34.37 |    51.72 |      50 |   34.37 |                   
+  index.tsx                   |       0 |        0 |       0 |       0 | 7-73              
+  onUserInput.tsx             |   84.61 |    88.23 |     100 |   84.61 | 16,26             
+ worker                       |       0 |        0 |       0 |       0 |                   
+  worker-configuration.d.ts   |       0 |        0 |       0 |       0 |                   
+ worker/src                   |       0 |        0 |       0 |       0 |                   
+  index.ts                    |       0 |        0 |       0 |       0 | 10-293            
+------------------------------|---------|----------|---------|---------|-------------------

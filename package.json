@@ -24,7 +24,7 @@
     "lint:misc": "prettier '**/*.json' '**/*.md' '!**/CHANGELOG.md' '**/*.yml' --ignore-path .gitignore",
     "start": "yarn workspaces foreach --parallel --interlaced --verbose run start",
     "test": "yarn workspace snap run test",
-    "test:all": "yarn test:worker && yarn test:snap && yarn test:site"
+    "test:all": "yarn workspace site run test:all && yarn workspace snap run test:all && yarn workspace worker run test:all"
   },
   "devDependencies": {
     "@lavamoat/allow-scripts": "^3.0.0",
