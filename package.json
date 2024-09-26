@@ -23,7 +23,9 @@
     "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
     "lint:misc": "prettier '**/*.json' '**/*.md' '!**/CHANGELOG.md' '**/*.yml' --ignore-path .gitignore",
     "start": "yarn workspaces foreach --parallel --interlaced --verbose run start",
-    "test": "yarn workspace snap run test"
+    "test": "yarn workspace snap run test",
+    "zip": "zip -r ethbinder.zip . -x \"node_modules/*\" \"*/node_modules/*\" \"dist/*\" \"*/dist/*\" \".git/*\" \"*.log\" \".next/*\" \"build/*\" \"coverage/*\" \"out/*\" \"*.DS_Store\" \".cache/*\" \"*/.cache/*\" \".yarn/*\" \"*/.yarn/cache/*\"",
+    "deploy": "git push; cd packages/worker; wrangler deploy"
   },
   "devDependencies": {
     "@lavamoat/allow-scripts": "^3.0.0",
